@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lab 2 - Multivariate Visualization</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>STATS 401</h1>
+    <p>Data Acquisition and Visualization</p>
+</header>
+
+<nav class="lab-nav">
+    <a href="../lab1/index.html">Lab 1</a>
+    <a href="../lab2/index.html">Lab 2</a>
+    <a href="../lab3/index.html">Lab 3</a>
+    <a href="../lab4/index.html">Lab 4</a>
+    <a href="../lab5/index.html">Lab 5</a>
+    <a href="../lab6/index.html">Lab 6</a>
+    <a href="../lab7/index.html">Lab 7</a>
+    <a href="../lab8/index.html">Lab 8</a>
+    <a href="../lab9/index.html">Lab 9</a>
+    <a href="../lab10/index.html">Lab 10</a>
+</nav>
+
+<main>
+
+    <h2>Lab 2: City Multivariate Visualization</h2>
+
+    <p>
+        Temperature, development level, population, and region.
+    </p>
+
+    <div id="chart" class="chart-wrap"></div>
+
+    <div id="tooltip" class="tooltip"></div>
+
+    <section class="note">
+
+        <h3>Design Justification</h3>
+
+        <p>
+            I mapped temperature to horizontal position because position
+            makes numerical values easy to compare. Development level is
+            shown on the vertical axis because Low, Medium, and High have
+            a clear order. Population is mapped to circle size, so larger
+            cities appear more prominent. Region is mapped to color because
+            it is categorical and has no natural order. This design separates
+            cities by development level while keeping temperature comparisons
+            clear. It also allows viewers to quickly notice larger cities,
+            regional patterns, and possible differences in temperature across
+            development levels. Tooltips provide the exact values for each
+            city without adding too much text to the chart.
+        </p>
+
+        <p>
+            <a href="practice.html">Lab 2 practice</a>
+        </p>
+
+    </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="lab2.js"></script>
+
+</body>
+</html>
