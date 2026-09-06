@@ -1,0 +1,30 @@
+LAB 4 RUN SUMMARY
+=================
+
+Raw rows: 4117
+Missing text before cleaning: 0
+Duplicate text before cleaning: 0
+Duplicates removed: 0
+Invalid labels: 0
+Clean rows: 4117
+
+Sentiment counts:
+sentiment
+Neutral     3032
+Positive     610
+Negative     475
+
+Sentiment score range:
+-0.9429
+to
+0.9879
+
+Most negative topic:
+Legal | Regulation
+Average score:
+-0.1908
+
+Most positive topic:
+Stock Commentary
+Average score:
+0.2606

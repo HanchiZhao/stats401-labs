@@ -1,28 +1,128 @@
 <!DOCTYPE html>
+
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>
+Lab 4 - Cleaning Web Data
+</title>
+<link href="../css/style.css" rel="stylesheet"/>
+<style>
 
-    <title>Lab 4</title>
+.lab4-summary {
+    max-width: 850px;
+}
 
-    <link rel="stylesheet" href="../css/style.css">
+.lab4-summary p {
+    margin: 5px 0;
+}
+
+#chart {
+    margin-top: 25px;
+    overflow-x: auto;
+}
+
+.sentiment-bar {
+    opacity: 0.85;
+}
+
+.sentiment-bar:hover {
+    opacity: 1;
+}
+
+.sentiment-bar.positive {
+    fill: steelblue;
+}
+
+.sentiment-bar.negative {
+    fill: indianred;
+}
+
+.zero-line {
+    stroke: #777;
+    stroke-width: 1px;
+    stroke-dasharray: 4 4;
+}
+
+.chart-explanation {
+    color: #666;
+}
+
+.analysis-placeholder {
+    border-left: 3px solid #ccc;
+    padding-left: 15px;
+}
+
+</style>
 </head>
-
 <body>
-
 <header>
-    <h1>STATS 401</h1>
-    <p>Data Acquisition and Visualization</p>
+<h1>STATS 401</h1>
+<p>
+Data Acquisition and Visualization
+</p>
 </header>
-
+<nav class="lab-nav">
+<a href="../lab1/index.html">Lab 1</a>
+<a href="../lab2/index.html">Lab 2</a>
+<a href="../lab3/index.html">Lab 3</a>
+<a href="../lab4/index.html">Lab 4</a>
+<a href="../lab5/index.html">Lab 5</a>
+<a href="../lab6/index.html">Lab 6</a>
+<a href="../lab7/index.html">Lab 7</a>
+<a href="../lab8/index.html">Lab 8</a>
+<a href="../lab9/index.html">Lab 9</a>
+<a href="../lab10/index.html">Lab 10</a>
+</nav>
 <main>
-    <h2>Lab 4</h2>
-    <p>Coming soon.</p>
-
-    <a href="../index.html">Back to home</a>
+<h2>
+Lab 4: Cleaning Web Data for Visualization
+</h2>
+<section class="lab4-summary">
+<h3>Dataset</h3>
+<p>
+I used the Twitter Financial News Topic dataset,
+an English-language collection of finance-related
+tweets categorized into 20 financial topics.
+</p>
+<p>
+<strong>Raw source:</strong>
+Twitter Financial News Topic dataset
+</p>
+<p>
+<strong>Processed records:</strong>
+<span id="record-count">...</span>
+</p>
+<p>
+<strong>Sentiment method:</strong>
+cardiffnlp/twitter-roberta-base-sentiment-latest
+</p>
+<p>
+The sentiment values shown here are
+model-generated estimates rather than
+ground-truth labels.
+</p>
+</section>
+<h3>
+Average Tweet Sentiment by Financial Topic
+</h3>
+<p class="chart-explanation">
+Scores below zero indicate more negative sentiment;
+scores above zero indicate more positive sentiment.
+Hover over a bar for details.
+</p>
+<div class="chart-wrap" id="chart">
+</div>
+<div class="tooltip" id="tooltip">
+</div>
+<section class="note">
+<h3>Short Analysis</h3>
+<p class="analysis-placeholder">I used the Twitter Financial News Topic dataset, which contains finance-related tweets categorized into 20 topics. I analyzed the validation split, which initially contained 4,117 tweets. During cleaning, I checked missing tweet text, duplicate records, malformed strings, and topic labels. No missing text, duplicate records, or invalid topic labels were found, so all 4,117 tweets remained after cleaning. Sentiment was estimated using the CardiffNLP Twitter RoBERTa model, and the numeric sentiment score was calculated as the probability of positive sentiment minus the probability of negative sentiment. The visualization maps financial topic to vertical position and average sentiment score to horizontal position. Legal | Regulation had the lowest average score at -0.1908, while Stock Commentary had the highest average score at 0.2606. These values are model-generated estimates rather than ground-truth sentiment labels.</p>
+</section>
 </main>
-
+<script src="https://cdn.jsdelivr.net/npm/d3@7">
+</script>
+<script src="lab4.js"></script>
 </body>
 </html>

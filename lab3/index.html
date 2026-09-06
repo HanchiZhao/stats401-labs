@@ -1,28 +1,180 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Lab 3</title>
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="../css/style.css">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Lab 3 - Web Data Acquisition</title>
+
+<link
+    rel="stylesheet"
+    href="../css/style.css"
+>
+
+<style>
+
+.dataset-summary {
+    max-width: 850px;
+    margin-bottom: 25px;
+}
+
+.dataset-summary p {
+    margin: 5px 0;
+}
+
+.table-container {
+    margin-top: 20px;
+    max-height: 700px;
+    overflow: auto;
+    border: 1px solid #ddd;
+}
+
+#data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+#data-table th,
+#data-table td {
+    padding: 9px 11px;
+    border-bottom: 1px solid #e5e5e5;
+    text-align: left;
+}
+
+#data-table th {
+    position: sticky;
+    top: 0;
+    background: #f5f5f5;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+#data-table th:hover {
+    background: #e8e8e8;
+}
+
+#data-table tbody tr:hover {
+    background: #fafafa;
+}
+
+#table-status {
+    margin-top: 12px;
+    color: #666;
+}
+
+</style>
+
 </head>
 
 <body>
 
 <header>
-    <h1>STATS 401</h1>
-    <p>Data Acquisition and Visualization</p>
+
+<h1>STATS 401</h1>
+
+<p>
+Data Acquisition and Visualization
+</p>
+
 </header>
 
-<main>
-    <h2>Lab 3</h2>
-    <p>Coming soon.</p>
 
-    <a href="../index.html">Back to home</a>
+<nav class="lab-nav">
+
+<a href="../lab1/index.html">Lab 1</a>
+<a href="../lab2/index.html">Lab 2</a>
+<a href="../lab3/index.html">Lab 3</a>
+<a href="../lab4/index.html">Lab 4</a>
+<a href="../lab5/index.html">Lab 5</a>
+<a href="../lab6/index.html">Lab 6</a>
+<a href="../lab7/index.html">Lab 7</a>
+<a href="../lab8/index.html">Lab 8</a>
+<a href="../lab9/index.html">Lab 9</a>
+<a href="../lab10/index.html">Lab 10</a>
+
+</nav>
+
+
+<main>
+
+<h2>
+Lab 3: Web Data Acquisition
+</h2>
+
+
+<section class="dataset-summary">
+
+<h3>Dataset Description</h3>
+
+<p>
+The dataset contains 1,000 book records collected
+from Books to Scrape, a website designed for
+web-scraping practice.
+</p>
+
+<p>
+<strong>Source:</strong>
+Books to Scrape
+</p>
+
+<p>
+<strong>Acquisition method:</strong>
+Python requests + BeautifulSoup
+</p>
+
+<p>
+<strong>Pagination:</strong>
+50 catalogue pages were requested automatically.
+</p>
+
+<p>
+<strong>Rate limiting:</strong>
+The script waits one second between repeated requests.
+</p>
+
+<p>
+<strong>Attributes:</strong>
+title, price, star rating, availability,
+source page, and product URL.
+</p>
+
+</section>
+
+
+<h3>Acquired Records</h3>
+
+<p>
+Click any column heading to sort the table.
+Click it again to reverse the order.
+</p>
+
+<p id="table-status">
+Loading records...
+</p>
+
+<div class="table-container">
+
+<table id="data-table"></table>
+
+</div>
+
 </main>
 
+
+<script
+    src="https://cdn.jsdelivr.net/npm/d3@7">
+</script>
+
+<script src="lab3.js"></script>
+
 </body>
+
 </html>
