@@ -1,28 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Lab 8</title>
-
-    <link rel="stylesheet" href="../css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STATS 401 Lab 8</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: #23313f;
+      background: #f4f7fa;
+    }
+    main { max-width: 1380px; margin: 0 auto; padding: 28px; }
+    h1 { margin-bottom: 5px; }
+    h2 { margin-top: 0; }
+    h3 { margin-bottom: 10px; }
+    .subtitle { margin-top: 0; color: #657487; }
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 22px;
+      margin: 20px 0;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .stat {
+      background: #f2f5f8;
+      border-radius: 10px;
+      padding: 15px;
+    }
+    .stat strong { display: block; font-size: 25px; }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin: 12px 0;
+    }
+    input, select, button {
+      padding: 8px 10px;
+      border: 1px solid #c9d2dc;
+      border-radius: 7px;
+      background: white;
+      font: inherit;
+    }
+    input { min-width: 250px; }
+    button { cursor: pointer; }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin: 12px 0;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+    .legend-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .map-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.5fr) minmax(280px, .8fr);
+      gap: 18px;
+    }
+    svg { background: #fbfcfd; }
+    #section-count-chart,
+    #section-length-chart { width: 100%; height: 420px; }
+    #semantic-map {
+      width: 100%;
+      height: 620px;
+      border: 1px solid #dfe5eb;
+      border-radius: 10px;
+      cursor: grab;
+    }
+    #semantic-map:active { cursor: grabbing; }
+    #detail-panel {
+      background: #f7f9fb;
+      border-radius: 10px;
+      padding: 15px;
+      min-height: 620px;
+      overflow-y: auto;
+    }
+    #detail-panel p { line-height: 1.5; }
+    .neighbor {
+      margin: 9px 0;
+      padding: 9px;
+      border-radius: 7px;
+      background: white;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .matrix-wrap {
+      overflow: auto;
+      max-height: 850px;
+      border: 1px solid #e3e8ed;
+      border-radius: 8px;
+    }
+    #matrix { display: block; }
+    .finding {
+      margin: 12px 0;
+      padding: 12px;
+      border-left: 4px solid #687b8c;
+      background: #f6f8fa;
+    }
+    .description { max-width: 1000px; line-height: 1.65; }
+    .note { font-size: 13px; color: #687889; }
+    .tooltip {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 999;
+      max-width: 360px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: rgba(23,31,40,.95);
+      color: white;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    #status-banner {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 12px 16px;
+      background: #ffefc2;
+      border-bottom: 1px solid #d9bd6c;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      white-space: pre-wrap;
+    }
+    .selected-cell { stroke: #111 !important; stroke-width: 2.2 !important; }
+    @media (max-width: 900px) {
+      .stats, .summary-grid, .map-layout { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-
 <body>
-
-<header>
-    <h1>STATS 401</h1>
-    <p>Data Acquisition and Visualization</p>
-</header>
-
+<div id="status-banner"></div>
 <main>
-    <h2>Lab 8</h2>
-    <p>Coming soon.</p>
+  <h1>Lab 8: Web Text Data and Visualization</h1>
+  <p class="subtitle">Interactive exploration of the Duke Kunshan University Undergraduate Instruction Bulletin</p>
 
-    <a href="../index.html">Back to home</a>
+  <section class="card">
+    <h2>1. Bulletin / Corpus Description</h2>
+    <div id="source-info"></div>
+    <div class="stats">
+      <div class="stat"><strong id="raw-count">–</strong>Raw passages</div>
+      <div class="stat"><strong id="clean-count">–</strong>Clean passages</div>
+      <div class="stat"><strong id="avg-length">–</strong>Average words</div>
+      <div class="stat"><strong id="section-count">–</strong>Formal sections</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>2. Corpus Overview</h2>
+    <div class="summary-grid">
+      <div>
+        <h3>Passages by Section</h3>
+        <svg id="section-count-chart" viewBox="0 0 620 420"></svg>
+      </div>
+      <div>
+        <h3>Average Passage Length by Section</h3>
+        <svg id="section-length-chart" viewBox="0 0 620 420"></svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>3. Semantic Embedding Map</h2>
+    <p>Each point represents one passage. Position represents semantic similarity, color represents semantic topic, and point size represents passage length.</p>
+    <p class="note">UMAP axes do not have independent semantic meanings. Nearby points are the meaningful relationship.</p>
+
+    <div class="controls">
+      <input id="search" type="text" placeholder="Search bulletin text...">
+      <select id="section-filter"><option value="ALL">All sections</option></select>
+      <select id="topic-filter"><option value="ALL">All topics</option></select>
+      <button id="reset-map" type="button">Reset view</button>
+      <button id="clear-selection" type="button">Clear selection</button>
+    </div>
+
+    <div id="topic-legend" class="legend"></div>
+
+    <div class="map-layout">
+      <svg id="semantic-map" viewBox="0 0 900 620" aria-label="Semantic embedding map"></svg>
+      <div id="detail-panel">
+        <h3>Passage Details</h3>
+        <p>Click a passage to see its metadata, original text, and five nearest semantic neighbors.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>4. Topic × Bulletin Section Matrix</h2>
+    <p>Rows are formal bulletin sections, columns are semantic topics, and darker cells contain more passages. Click a cell to highlight matching passages in the semantic map.</p>
+    <div class="matrix-wrap">
+      <svg id="matrix"></svg>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>5. Semantic Findings</h2>
+    <div id="findings"></div>
+  </section>
+
+  <section class="card">
+    <h2>6. Design Description</h2>
+    <div class="description">
+      <p>
+        The bulletin was divided into paragraph-sized or short policy passages while preserving page and inferred chapter, section, and subsection metadata. After cleaning duplicate or malformed text, each passage was encoded with the all-MiniLM-L6-v2 sentence-transformer model using normalized embeddings. K-means clustering was applied to the original high-dimensional embeddings, while characteristic TF-IDF terms and representative passages were used to interpret the resulting clusters. UMAP projected the semantic vectors into two dimensions using cosine distance so that nearby passages tend to have related meanings.
+      </p>
+      <p>
+        In the semantic map, position represents the two-dimensional embedding, color identifies semantic topic, and circle size encodes passage length. Search, formal-section filtering, semantic-topic filtering, zooming, and panning support exploration at different levels of detail. Clicking a passage keeps its full metadata and text visible while highlighting its nearest semantic neighbors. The Topic × Bulletin Section matrix complements the map by summarizing how semantic topics are distributed across the bulletin's formal structure. Clicking a matrix cell highlights the matching map passages, directly coordinating the two views. The main limitation is that UMAP is a two-dimensional approximation and cluster labels simplify complex themes, so interpretation should always be checked against the underlying passages rather than inferred from map position alone.
+      </p>
+    </div>
+  </section>
 </main>
 
+<div id="tooltip" class="tooltip"></div>
+<script src="lab8.js"></script>
 </body>
 </html>

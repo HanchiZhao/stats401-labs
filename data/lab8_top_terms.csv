@@ -1,0 +1,25 @@
+cluster,cluster_name,rank,term
+0,Course / Life / World,1,course
+0,Course / Life / World,2,life
+0,Course / Life / World,3,world
+0,Course / Life / World,4,art
+0,Course / Life / World,5,read
+0,Course / Life / World,6,bulletin
+0,Course / Life / World,7,feel
+0,Course / Life / World,8,human
+1,Students / Class / Term,1,students
+1,Students / Class / Term,2,class
+1,Students / Class / Term,3,term
+1,Students / Class / Term,4,basis
+1,Students / Class / Term,5,duke
+1,Students / Class / Term,6,course
+1,Students / Class / Term,7,office
+1,Students / Class / Term,8,student
+2,Grade / Credits / Term,1,grade
+2,Grade / Credits / Term,2,credits
+2,Grade / Credits / Term,3,term
+2,Grade / Credits / Term,4,credit
+2,Grade / Credits / Term,5,course
+2,Grade / Credits / Term,6,maximum
+2,Grade / Credits / Term,7,student
+2,Grade / Credits / Term,8,maximum credits

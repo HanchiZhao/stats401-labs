@@ -1,28 +1,134 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <title>STATS 401 Lab 7</title>
 
-    <title>Lab 7</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 
-    <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      color: #222;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 15px 0;
+    }
+
+    #time-slider {
+      width: 420px;
+    }
+
+    #date-label {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    svg {
+      border: 1px solid #ddd;
+      background: #fafafa;
+    }
+
+    .tooltip {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      background: rgba(20,20,20,.92);
+      color: white;
+      padding: 8px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+
+    .questions {
+      max-width: 1000px;
+      line-height: 1.6;
+      margin-top: 30px;
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-    <h1>STATS 401</h1>
-    <p>Data Acquisition and Visualization</p>
-</header>
+<h1>Lab 7 — Animated Temporal Commercial Network</h1>
 
-<main>
-    <h2>Lab 7</h2>
-    <p>Coming soon.</p>
+<p>
+Node color = sector; node size = current transaction volume;
+link width = transaction amount; link color = transaction type.
+</p>
 
-    <a href="../index.html">Back to home</a>
-</main>
+<div class="controls">
+
+  <button id="play">Play</button>
+
+  <button id="pause">Pause</button>
+
+  <button id="reset">Reset</button>
+
+  <input
+    type="range"
+    id="time-slider"
+    min="1"
+    max="60"
+    value="1"
+  >
+
+  <span id="date-label">Day 1</span>
+
+</div>
+
+<div id="summary"></div>
+
+<svg
+  id="network"
+  width="1000"
+  height="650">
+</svg>
+
+<div class="questions">
+
+  <h2>Temporal Network Observations</h2>
+
+  <p>
+    <strong>1. How does overall network connectivity change across the 60 days?</strong><br>
+    Connectivity changes across the period. Some days have many active links,
+    while others have a visibly sparser network.
+  </p>
+
+  <p>
+    <strong>2. Which companies become more commercially active over time?</strong><br>
+    Companies whose nodes repeatedly grow larger and maintain several active
+    connections appear more commercially active.
+  </p>
+
+  <p>
+    <strong>3. Are there periods with separate clusters?</strong><br>
+    Some days form smaller groups rather than one fully connected network,
+    indicating temporary clusters.
+  </p>
+
+  <p>
+    <strong>4. Which relationships appear, disappear, or become stronger?</strong><br>
+    Links appear and disappear as time changes. Thicker links indicate larger
+    transaction amounts.
+  </p>
+
+  <p>
+    <strong>5. Does the network become more or less cross-regional?</strong><br>
+    Cross-regional connectivity varies across the 60 days depending on which
+    companies are actively connected.
+  </p>
+
+</div>
+
+<div id="tooltip" class="tooltip"></div>
+
+<script src="lab7.js"></script>
 
 </body>
 </html>

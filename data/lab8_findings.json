@@ -1,0 +1,33 @@
+{
+  "major_topics": [
+    {
+      "topic": "Students / Class / Term",
+      "count": 27
+    },
+    {
+      "topic": "Grade / Credits / Term",
+      "count": 20
+    },
+    {
+      "topic": "Course / Life / World",
+      "count": 15
+    }
+  ],
+  "broad_topic": {
+    "topic": "Students / Class / Term",
+    "section_count": 14
+  },
+  "diverse_section": {
+    "section": "Unclassified",
+    "topic_count": 3
+  },
+  "cross_section_pair": {
+    "similarity": 0.9427833557128906,
+    "a_id": "p00023",
+    "a_section": "Grading and Grade Requirements",
+    "a_text": "that course is offered only on the CR/NC basis or the student elects to take it on the CR/NC basis,",
+    "b_id": "p00034",
+    "b_section": "2025 and Beyond",
+    "b_text": "a course, whether that course is offered only on the CR/NC basis or the student elects to take it on"
+  }
+}
