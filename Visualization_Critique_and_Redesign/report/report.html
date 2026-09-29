@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Visualization Critique and Redesign Report</title>
+<style>
+body{font-family:Georgia,serif;max-width:900px;margin:40px auto;padding:0 24px;line-height:1.6;color:#222}
+h1,h2{font-family:Arial,sans-serif} figure{margin:28px 0} img{max-width:100%;border:1px solid #ddd}.caption{font-size:.9rem;color:#555}
+.ref{font-size:.95rem}
+</style>
+</head>
+<body>
+<h1>Visualization Critique and Redesign: Life Expectancy vs. GDP per Capita</h1>
+
+<h2>Original Visualization and Context</h2>
+<p>This project critiques and redesigns Our World in Data’s <em>Life expectancy vs. GDP per capita</em> visualization. The original is a bubble scatterplot in which GDP per capita is encoded by horizontal position on a logarithmic scale and life expectancy at birth is encoded by vertical position. Circle size represents population and color represents continent. The visualization is intended to communicate the broad relationship between economic conditions and population health while also revealing regional patterns and unusual countries. The intended audience is primarily the general public, including readers interested in global development, economics, and health. Important tasks include identifying the overall relationship between GDP and life expectancy, comparing countries, locating outliers, recognizing regional patterns, and inspecting individual values.</p>
+
+<figure>
+<img src="https://ourworldindata.org/grapher/life-expectancy-vs-gdp-per-capita.png" alt="Original visualization">
+<p class="caption"><strong>Figure 1.</strong> Original <em>Life expectancy vs. GDP per capita</em> visualization from Our World in Data.</p>
+</figure>
+
+<h2>Critique</h2>
+<p>The visualization has several important strengths. First, its two most important quantitative variables are represented using position. Horizontal and vertical position support relatively accurate comparison, so the positive association between GDP per capita and life expectancy is immediately visible. Second, the chart efficiently incorporates additional contextual information. Continent is represented through color and population through circle size, allowing regional and demographic patterns to be explored within the same view. The logarithmic GDP scale is also appropriate because GDP per capita varies greatly across countries.</p>
+
+<p>However, the visualization also presents several challenges. First, population is encoded by circle area. Area is difficult to compare precisely, and large bubbles can overlap smaller points. This increases clutter and competes with the primary GDP–life expectancy relationship. Second, country labels are selectively displayed. Although labels help identify important examples, they create visual congestion in dense regions while leaving many other countries difficult to locate. Third, the logarithmic GDP axis may be overlooked by casual users. Because equal spatial distances on a logarithmic scale do not represent equal absolute differences, misunderstanding the scale could affect interpretation. Finally, exact country-to-country comparison requires repeatedly shifting attention between points and both axes, which increases effort for inspect and compare tasks.</p>
+
+<h2>Redesign Rationale</h2>
+<p>My redesign retains the scatterplot because position is appropriate for the two principal quantitative variables, but it changes how secondary information is presented. First, I remove strong population encoding from bubble size and use nearly uniform points. Population remains available through a tooltip and selected-country detail panel. This directly reduces overlap and strengthens the visual hierarchy around GDP and life expectancy.</p>
+
+<p>Second, I replace most permanent labels with search, hover, and click interactions. Users can search for any country, identify values through a tooltip, and keep a selected country highlighted. This supports locate, identify, and inspect tasks without filling dense regions with text. Third, I retain the logarithmic GDP scale but make it explicit in the axis title and use interpretable currency ticks. This preserves the statistical benefit of the log scale while reducing the risk of scale misinterpretation.</p>
+
+<p>Finally, I add a continent focus control and year slider. The continent control lowers the opacity of other regions rather than removing them, so the global context remains visible. The year slider supports temporal exploration and allows the viewer to compare how the GDP–life expectancy relationship changes across the historical dataset.</p>
+
+<h2>Original vs. Redesign</h2>
+<p>The original is effective for quickly communicating the overall relationship, but it prioritizes showing several variables simultaneously. The redesign instead prioritizes analytical tasks: locating a country, retrieving exact values, focusing on a region, and understanding the logarithmic scale are easier. There are trade-offs. Population differences are less immediately visible because large bubbles are removed, and some information now requires interaction. The redesign also uses an equivalent historical Gapminder-style dataset rather than the exact current OWID dataset. Finally, the visualization shows association rather than causation; GDP per capita should not be interpreted as independently causing higher life expectancy.</p>
+
+<figure>
+<div style="border:1px dashed #999;padding:20px;text-align:center">
+Insert a screenshot of the finished D3 redesign here after running the project.
+</div>
+<p class="caption"><strong>Figure 2.</strong> Redesigned D3.js visualization emphasizing clearer comparison and task-oriented interaction.</p>
+</figure>
+
+<h2>References</h2>
+<p class="ref">Our World in Data. <em>Life expectancy vs. GDP per capita.</em> https://ourworldindata.org/grapher/life-expectancy-vs-gdp-per-capita</p>
+<p class="ref">Redesign dataset: historical Gapminder-style country dataset distributed with Plotly Express, containing country, continent, year, life expectancy, population, and GDP per capita.</p>
+</body>
+</html>

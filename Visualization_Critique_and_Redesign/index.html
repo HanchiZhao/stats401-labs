@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Visualization Critique and Redesign</title>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header class="hero">
+    <p class="eyebrow">STATS 401 Individual Project</p>
+    <h1>Visualization Critique and Redesign</h1>
+    <h2>Life Expectancy vs. GDP per Capita</h2>
+    <p class="lede">A task-oriented redesign of an Our World in Data bubble scatterplot using D3.js.</p>
+  </header>
+
+  <section class="card">
+    <h2>1. Original Visualization</h2>
+    <div class="original-grid">
+      <div>
+        <img class="original-img"
+          src="https://ourworldindata.org/grapher/life-expectancy-vs-gdp-per-capita.png"
+          alt="Original Our World in Data Life expectancy vs. GDP per capita visualization">
+        <p class="caption"><strong>Figure 1.</strong> Original visualization: <em>Life expectancy vs. GDP per capita</em>, Our World in Data.</p>
+      </div>
+      <div>
+        <h3>Source and data</h3>
+        <p><strong>Source:</strong> Our World in Data, “Life expectancy vs. GDP per capita.”</p>
+        <p><a href="https://ourworldindata.org/grapher/life-expectancy-vs-gdp-per-capita" target="_blank" rel="noopener">Open the original visualization</a></p>
+        <p>The original chart compares GDP per capita and life expectancy across countries. GDP per capita is placed on a logarithmic horizontal axis, life expectancy on the vertical axis, continent is encoded by color, and population by bubble size.</p>
+        <p class="note">The redesign below uses a historical Gapminder-style country dataset (1952–2007) with country, continent, year, life expectancy, population, and GDP per capita. It is an equivalent external dataset used to implement the redesign in D3.js.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>2. Intended Message, Audience, and Tasks</h2>
+    <div class="three-col">
+      <div>
+        <h3>Intended message</h3>
+        <p>Countries with higher GDP per capita generally have higher life expectancy, but the relationship is nonlinear and varies across countries and regions. Viewers should also notice regional clustering and outliers.</p>
+      </div>
+      <div>
+        <h3>Audience</h3>
+        <p>The primary audience is a broad public interested in global development, economics, and population health, including both casual readers and users who want to inspect particular countries.</p>
+      </div>
+      <div>
+        <h3>Tasks</h3>
+        <ul>
+          <li>Identify the overall GDP–life expectancy relationship</li>
+          <li>Compare countries and regions</li>
+          <li>Locate specific countries</li>
+          <li>Find outliers</li>
+          <li>Inspect exact values</li>
+          <li>Explore change over time</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>3. Critique of the Original</h2>
+    <div class="critique-grid">
+      <article class="good">
+        <h3>Strength 1 — Effective quantitative channels</h3>
+        <p>The two primary quantitative variables use horizontal and vertical position, which supports accurate comparison and makes the overall relationship visible quickly.</p>
+      </article>
+      <article class="good">
+        <h3>Strength 2 — Compact multivariate context</h3>
+        <p>Color adds continent and bubble area adds population without requiring separate views. The logarithmic GDP scale is also appropriate for a variable spanning a very wide range.</p>
+      </article>
+      <article class="weak">
+        <h3>Weakness 1 — Bubble area and overlap</h3>
+        <p><strong>Problem:</strong> population is encoded through area, so large bubbles can cover nearby smaller countries.</p>
+        <p><strong>Why it matters:</strong> area is less precise than position and the large bubbles compete visually with the main GDP–life expectancy relationship.</p>
+        <p><strong>Improvement:</strong> use nearly uniform points and move population to details-on-demand.</p>
+      </article>
+      <article class="weak">
+        <h3>Weakness 2 — Label clutter without complete lookup</h3>
+        <p><strong>Problem:</strong> selected permanent labels occupy space, while many countries remain unlabeled.</p>
+        <p><strong>Why it matters:</strong> the view becomes cluttered but still does not support systematic country lookup.</p>
+        <p><strong>Improvement:</strong> replace most labels with search, hover, and persistent selection.</p>
+      </article>
+      <article class="weak">
+        <h3>Weakness 3 — Logarithmic scale can be overlooked</h3>
+        <p><strong>Problem:</strong> the logarithmic GDP scale is appropriate but easy for casual users to miss.</p>
+        <p><strong>Why it matters:</strong> equal horizontal distances do not represent equal absolute GDP differences.</p>
+        <p><strong>Improvement:</strong> retain the log scale but label it explicitly and use interpretable currency ticks.</p>
+      </article>
+      <article class="weak">
+        <h3>Weakness 4 — Exact comparison is cumbersome</h3>
+        <p><strong>Problem:</strong> comparing two countries requires repeatedly reading both axes and moving attention across the chart.</p>
+        <p><strong>Why it matters:</strong> this increases effort for inspect and compare tasks.</p>
+        <p><strong>Improvement:</strong> provide a persistent selected-country detail panel.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="card" id="redesign">
+    <h2>4. Redesigned D3.js Visualization</h2>
+    <p class="note">The redesign prioritizes the primary relationship and moves secondary details into interaction. Population remains available in the tooltip and country details.</p>
+
+    <div class="controls">
+      <label>Year
+        <input id="year-slider" type="range" min="1952" max="2007" step="5" value="2007">
+      </label>
+      <span id="year-label" class="pill">2007</span>
+
+      <label>Continent
+        <select id="continent-filter">
+          <option value="ALL">All continents</option>
+        </select>
+      </label>
+
+      <label>Search country
+        <input id="country-search" list="country-list" placeholder="e.g., Japan">
+        <datalist id="country-list"></datalist>
+      </label>
+
+      <button id="clear-selection" type="button">Clear selection</button>
+    </div>
+
+    <div id="continent-legend" class="legend"></div>
+
+    <div class="viz-layout">
+      <div>
+        <svg id="chart" viewBox="0 0 980 610" aria-label="Redesigned scatterplot"></svg>
+        <p class="axis-note"><strong>GDP per capita uses a logarithmic scale.</strong> Equal horizontal spacing represents multiplicative rather than equal absolute differences.</p>
+      </div>
+      <aside id="details" class="details">
+        <h3>Selected country</h3>
+        <p>Search for or click a country to keep its values visible here.</p>
+      </aside>
+    </div>
+
+    <p class="caption"><strong>Figure 2.</strong> Redesigned D3.js visualization emphasizing clearer comparison, country lookup, and task-oriented interaction.</p>
+  </section>
+
+  <section class="card">
+    <h2>5. Major Redesign Decisions</h2>
+    <div class="decision-list">
+      <article>
+        <h3>Decision 1 — Reduce bubble-size dominance</h3>
+        <p><strong>Changed:</strong> points use a nearly uniform radius instead of strongly encoding population by area. <strong>Why:</strong> population is secondary to the relationship between GDP and life expectancy. <strong>Problem addressed:</strong> overlap and difficult area comparison. <strong>Improvement:</strong> the primary x/y relationship receives stronger visual priority, while population remains available on demand.</p>
+      </article>
+      <article>
+        <h3>Decision 2 — Replace permanent labels with search, hover, and selection</h3>
+        <p><strong>Changed:</strong> most labels are removed and country lookup is handled through interaction. <strong>Why:</strong> labels create clutter in dense areas. <strong>Problem addressed:</strong> visual congestion and incomplete identification. <strong>Improvement:</strong> search supports locate, hover supports identify, and click supports persistent inspection.</p>
+      </article>
+      <article>
+        <h3>Decision 3 — Make the logarithmic scale explicit</h3>
+        <p><strong>Changed:</strong> the log scale is retained but clearly named, and currency ticks are formatted as $1k, $2k, $5k, etc. <strong>Why:</strong> the transformation is useful but can be overlooked. <strong>Problem addressed:</strong> scale misinterpretation. <strong>Improvement:</strong> viewers receive the benefits of the log scale with clearer guidance.</p>
+      </article>
+      <article>
+        <h3>Decision 4 — Add regional focus and a persistent detail panel</h3>
+        <p><strong>Changed:</strong> continent filtering de-emphasizes other regions rather than removing them, and selected-country values stay visible in a side panel. <strong>Why:</strong> users need both context and precise inspection. <strong>Problem addressed:</strong> difficult regional and exact-value comparison. <strong>Improvement:</strong> users can focus on a region while preserving global context and can inspect exact country values without repeatedly reading the axes.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>6. Original vs. Redesign</h2>
+    <div class="three-col">
+      <div>
+        <h3>Easier after redesign</h3>
+        <ul>
+          <li>Locate any country</li>
+          <li>Retrieve exact values</li>
+          <li>Focus on one continent</li>
+          <li>Compare years</li>
+          <li>Understand the log axis</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Trade-offs</h3>
+        <p>Population differences are less immediately visible because population is no longer encoded by large bubble areas. The redesign also requires interaction for some details that were visible immediately in the original.</p>
+      </div>
+      <div>
+        <h3>Limitations</h3>
+        <p>The scatterplot shows association, not causation. In addition, the redesign uses an equivalent historical dataset rather than the exact current OWID dataset, so the data years and source lineage differ from the original chart.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>7. Data Source and References</h2>
+    <ul class="refs">
+      <li>Our World in Data. <em>Life expectancy vs. GDP per capita.</em> Original visualization and source context.</li>
+      <li>Original OWID chart notes that life expectancy is period life expectancy at birth and GDP per capita is adjusted for inflation and differences in living costs; the 2022 chart uses GDP per capita in international-$ at 2011 prices.</li>
+      <li>Redesign dataset: historical Gapminder-style country data distributed with the Plotly Express example dataset, containing country, continent, year, life expectancy, population, and GDP per capita.</li>
+    </ul>
+    <p><a href="report/report.html">Open the 500–800 word project report</a></p>
+  </section>
+</main>
+
+<div id="tooltip" class="tooltip"></div>
+<script src="project.js"></script>
+</body>
+</html>

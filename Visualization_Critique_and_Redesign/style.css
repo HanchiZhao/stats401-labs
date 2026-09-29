@@ -1,0 +1,13 @@
+
+*{box-sizing:border-box} body{margin:0;background:#f5f7fa;color:#24303c;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+main{max-width:1380px;margin:auto;padding:30px}.hero{padding:24px 4px 8px}.eyebrow{text-transform:uppercase;letter-spacing:.08em;color:#667788;font-size:.78rem;font-weight:700}
+h1{font-size:2.4rem;margin:.2rem 0} h2{margin-top:0}.lede{font-size:1.1rem;color:#5a6977}.card{background:white;border-radius:16px;padding:24px;margin:20px 0;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.original-grid,.viz-layout{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(280px,.8fr);gap:22px}.original-img{width:100%;border:1px solid #e0e5e9;border-radius:10px}
+.caption,.note,.axis-note{font-size:.9rem;color:#627181;line-height:1.5}.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.critique-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.critique-grid article,.decision-list article{padding:16px;border-radius:10px;background:#f7f9fb}.good{border-left:4px solid #5a8f67}.weak{border-left:4px solid #b9775a}
+.controls{display:flex;flex-wrap:wrap;align-items:end;gap:12px;margin:16px 0}.controls label{display:flex;flex-direction:column;gap:5px;font-size:.9rem}.controls input,.controls select,.controls button{padding:8px 10px;border:1px solid #cbd4dc;border-radius:7px;background:white}
+#year-slider{min-width:260px}.pill{display:inline-block;background:#edf2f6;padding:7px 12px;border-radius:999px;font-weight:700}.legend{display:flex;flex-wrap:wrap;gap:9px 14px;margin:10px 0 14px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:.85rem}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.details{background:#f7f9fb;border-radius:10px;padding:16px;min-height:280px}
+#chart{width:100%;height:610px;background:#fcfdfe;border:1px solid #e2e7eb;border-radius:10px}.tooltip{position:absolute;pointer-events:none;opacity:0;z-index:99;background:rgba(20,27,34,.95);color:white;padding:9px 11px;border-radius:7px;font-size:.82rem;line-height:1.45;max-width:300px}
+.decision-list{display:grid;gap:14px}.refs{line-height:1.6}a{color:#0b63a8}ul{line-height:1.6}
+@media(max-width:900px){.original-grid,.viz-layout,.three-col,.critique-grid{grid-template-columns:1fr}}
