@@ -1,28 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Lab 9</title>
-
-    <link rel="stylesheet" href="../css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 9: Geospatial Visualization</title>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-<header>
-    <h1>STATS 401</h1>
-    <p>Data Acquisition and Visualization</p>
-</header>
-
 <main>
-    <h2>Lab 9</h2>
-    <p>Coming soon.</p>
+  <h1>Lab 9: Geospatial Visualization</h1>
+  <p class="subtitle">2025 Nominal GDP — Choropleth and GDP Cartogram</p>
 
-    <a href="../index.html">Back to home</a>
+  <section class="card">
+    <h2>1. Dataset Description</h2>
+    <p>
+      This page uses the course-provided <code>lab9_gdp_2025_top50.csv</code>,
+      containing the 50 largest economies by 2025 nominal GDP.
+      Countries outside the provided top-50 data are treated as <strong>missing</strong>,
+      not as GDP = 0.
+    </p>
+    <p class="note">
+      Geographic boundaries are loaded from the public World Atlas TopoJSON dataset.
+      The choropleth preserves geography; the Dorling-style cartogram represents GDP by circle area.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>2. 2025 GDP Choropleth</h2>
+    <div class="controls">
+      <button id="reset-map">Reset zoom</button>
+      <button id="clear-selection">Clear selection</button>
+      <span class="badge">Scroll to zoom · drag to pan · click a country to link both views</span>
+    </div>
+    <div class="legend">
+      <strong>2025 nominal GDP</strong>
+      <div id="legend-bar" class="legend-bar"></div>
+      <span id="legend-min"></span>
+      <span>→</span>
+      <span id="legend-max"></span>
+      <span style="margin-left:12px">Gray = not in provided top-50 data</span>
+    </div>
+    <div class="map-wrap">
+      <svg id="choropleth" viewBox="0 0 1000 560"></svg>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>3. GDP Cartogram</h2>
+    <p class="note">
+      Circle <strong>area</strong> represents GDP. Initial circle positions are geographic centroids,
+      then a collision force separates overlap while keeping countries near their approximate locations.
+    </p>
+    <div class="map-wrap">
+      <svg id="cartogram" viewBox="0 0 1000 560"></svg>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>4. Design and Comparison</h2>
+    <div class="reflection">
+      <p>
+        The choropleth and cartogram emphasize different questions even though they use the same GDP data.
+        The choropleth preserves familiar country boundaries, locations, and neighborhood relationships,
+        so it is especially useful for identifying where high-GDP economies are located and whether
+        economic size shows geographic clustering. I use a logarithmic sequential color scale because
+        the GDP distribution is strongly skewed; without transformation, the largest economies would
+        dominate the color range and many other top-50 countries would look too similar.
+      </p>
+      <p>
+        The cartogram shifts the main visual channel from color to area. Economies such as the United States
+        and China become visually dominant, while smaller economies shrink. This makes magnitude comparison
+        more immediate, but geographic shape and precise spatial relationships are sacrificed. The
+        Dorling-style layout keeps circles near geographic centroids, which preserves approximate regional
+        context while avoiding overlapping symbols. Linked highlighting helps compensate for distortion:
+        clicking or hovering over a country in either view emphasizes the same country in both.
+        Overall, the choropleth better supports geographic-location and regional-pattern tasks, while the
+        cartogram better supports direct comparison of economic magnitude.
+      </p>
+    </div>
+  </section>
 </main>
-
+<div id="tooltip" class="tooltip"></div>
+<script src="lab9.js"></script>
 </body>
 </html>

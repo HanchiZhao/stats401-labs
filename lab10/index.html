@@ -1,28 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Lab 10</title>
-
-    <link rel="stylesheet" href="../css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 10: Novel Interaction with Visualizations</title>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-<header>
-    <h1>STATS 401</h1>
-    <p>Data Acquisition and Visualization</p>
-</header>
-
 <main>
-    <h2>Lab 10</h2>
-    <p>Coming soon.</p>
+  <h1>Lab 10: Novel Interaction with Visualizations</h1>
+  <p class="subtitle">Extending the Lab 9 GDP map with voice interaction</p>
 
-    <a href="../index.html">Back to home</a>
+  <section class="card">
+    <h2>1. Previous Visualization</h2>
+    <p>
+      I reuse the Lab 9 2025 GDP choropleth. Voice interaction is added as a new input modality;
+      the underlying visualization functions can still be triggered with conventional controls.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>2. Voice Interaction</h2>
+    <div class="voice-panel">
+      <div>
+        <div class="controls">
+          <button id="voice-button">Start Voice Control</button>
+          <button id="stop-voice">Stop Listening</button>
+          <button id="reset-button">Reset</button>
+          <select id="fallback-region">
+            <option value="ALL">All regions</option>
+            <option value="Asia">Asia</option>
+            <option value="Europe">Europe</option>
+            <option value="Africa">Africa</option>
+            <option value="Americas">Americas</option>
+            <option value="Oceania">Oceania</option>
+          </select>
+          <input id="fallback-country" placeholder="Country name, e.g. Japan">
+          <button id="highlight-button">Highlight country</button>
+        </div>
+        <div class="status"><strong>Status:</strong> <span id="voice-status">Voice control inactive</span></div>
+        <div class="status" style="margin-top:8px"><strong>Action:</strong> <span id="voice-action">None</span></div>
+      </div>
+      <div>
+        <h3>Try saying</h3>
+        <ul class="command-list">
+          <li>“Show Asia”</li>
+          <li>“Show Europe”</li>
+          <li>“Highlight Japan”</li>
+          <li>“Highlight China”</li>
+          <li>“Reset”</li>
+        </ul>
+        <p class="note">
+          The microphone activates only after you click <strong>Start Voice Control</strong>.
+          Browser speech-recognition support varies; the buttons, region menu, mouse hover/click,
+          and text input remain available as fallback controls.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>3. Voice-Controlled 2025 GDP Map</h2>
+    <div class="legend">
+      <strong>2025 nominal GDP</strong>
+      <div id="legend-bar" class="legend-bar"></div>
+      <span id="legend-min"></span><span>→</span><span id="legend-max"></span>
+      <span style="margin-left:12px">Gray = no top-50 GDP data</span>
+    </div>
+    <div class="map-wrap">
+      <svg id="voice-map" viewBox="0 0 1000 560"></svg>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>4. Design Reflection</h2>
+    <p class="reflection">
+      I extended my Lab 9 geospatial GDP visualization by adding voice interaction.
+      The main commands are “Show [region],” “Highlight [country],” and “Reset.”
+      These commands support regional filtering, country lookup, and navigation without requiring
+      precise mouse selection. This is useful on a world map because some countries are visually
+      small and can be difficult to click accurately. The voice commands call the same filtering
+      and highlighting functions used by the conventional controls, so the visualization behavior
+      remains consistent across input methods. I also show visible feedback for both the recognized
+      speech and the resulting action. Mouse interaction, a region dropdown, a country text box,
+      and reset buttons remain available as fallback controls. The main limitation is speech-recognition
+      reliability: pronunciation, background noise, browser support, and ambiguous country names can
+      lead to recognition errors. For privacy, the microphone is never started automatically and
+      requires an explicit button click.
+    </p>
+  </section>
 </main>
-
+<div id="tooltip" class="tooltip"></div>
+<script src="lab10.js"></script>
 </body>
 </html>
